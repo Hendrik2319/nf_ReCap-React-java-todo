@@ -10,7 +10,12 @@ export default function AddTodo( props: AddTodoProps ) {
 
     function onSubmit( event:FormEvent<HTMLFormElement> ) {
         event.preventDefault()
-        props.addTodo(description)
+        if (description.length !== 0) {
+            props.addTodo(description)
+            setDescription("")
+        } else {
+            alert("Please enter a description before adding.")
+        }
     }
 
     function onChange( event:ChangeEvent<HTMLInputElement> ) {

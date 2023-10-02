@@ -1,15 +1,16 @@
 import './App.css'
 import axios from "axios";
 import {useEffect, useState} from "react";
-import {Todo} from "./Types.tsx";
+import {Todo, TodoStatus} from "./Types.tsx";
 import TodoCard from "./TodoCard.tsx";
 import AddTodo from "./AddTodo.tsx";
 
 function App() {
+    const [reload, setReload] = useState<boolean>(false)
     const [todoList, setTodoList] = useState<Todo[]>([])
     console.debug("App rendered: "+todoList.length+" TODO entries")
 
-    useEffect( loadData, [] )
+    useEffect( loadData, [ reload ] )
 
     function loadData() {
         axios
@@ -31,7 +32,6 @@ function App() {
 
     function addTodo( description: string ) {
         const newTodo: Todo = {
-            id: null,
             description: description,
             status: "OPEN"
         }
@@ -52,29 +52,39 @@ function App() {
             })
     }
 
+    function deleteTodo( id:string ) {
+        axios
+            .delete('/api/todo/'+id)
+            .then(response => {
+                if (response.status != 200)
+                    throw {error: "Got wrong status on delete entry: " + response.status}
+                setReload( !reload )
+            })
+            .catch(reason => {
+                console.error(reason)
+            })
+    }
+
+    function generateCards( status:TodoStatus ) {
+        return todoList
+            .filter( e=> e.status === status)
+            .map( (e: Todo) =>
+                <TodoCard
+                    key={e.id}
+                    todo={e}
+                    deleteTodo={deleteTodo}
+                />
+            )
+    }
+
     return (
         <>
             <h1>{"To"+"do"} List</h1>
             <AddTodo addTodo={addTodo}/>
             <div className="ListOfTodoLists">
-                <div className="TodoListContainer">
-                    Open
-                    <div className="TodoList">
-                        {todoList.filter( e=> e.status=="OPEN").map( (e: Todo) => <TodoCard key={e.id} todo={e}/>)}
-                    </div>
-                </div>
-                <div className="TodoListContainer">
-                    Doing
-                    <div className="TodoList">
-                        {todoList.filter( e=> e.status=="IN_PROGRESS").map( (e: Todo) => <TodoCard key={e.id} todo={e}/>)}
-                    </div>
-                </div>
-                <div className="TodoListContainer">
-                    Done
-                    <div className="TodoList">
-                        {todoList.filter( e=> e.status=="DONE").map( (e: Todo) => <TodoCard key={e.id} todo={e}/>)}
-                    </div>
-                </div>
+                <div className="TodoListContainer">Open  <div className="TodoList">{generateCards("OPEN"       )}</div></div>
+                <div className="TodoListContainer">Doing <div className="TodoList">{generateCards("IN_PROGRESS")}</div></div>
+                <div className="TodoListContainer">Done  <div className="TodoList">{generateCards("DONE"       )}</div></div>
             </div>
         </>
     )
