@@ -1,11 +1,10 @@
 import {ChangeEvent, FormEvent, useEffect, useState} from "react";
-import {Todo} from "./Types.tsx";
+import {Todo, TodoCallback} from "./Types.tsx";
 import {useNavigate} from "react-router-dom";
 
-export type SaveEditChangesCallback = (entry: Todo) => void;
 type Props = {
     selectedEntry: Todo
-    saveChanges: SaveEditChangesCallback
+    saveChanges: TodoCallback
 }
 
 export function EditTodoForm( props:Props ) {

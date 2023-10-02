@@ -5,3 +5,6 @@ export type Todo = {
 }
 
 export type TodoStatus = "OPEN" | "IN_PROGRESS" | "DONE"
+
+export type TodoCallback = (entry: Todo) => void;
+export type IdCallback   = (id: string) => void;

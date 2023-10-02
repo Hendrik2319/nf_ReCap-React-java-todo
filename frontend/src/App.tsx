@@ -1,7 +1,7 @@
 import './App.css'
 import axios from "axios";
 import React, {useEffect, useState} from "react";
-import {Todo} from "./Types.tsx";
+import {Todo, TodoStatus} from "./Types.tsx";
 import TodoList from "./TodoList.tsx";
 import {Route, Routes} from "react-router-dom";
 import {EditTodo} from "./EditTodo.tsx";
@@ -66,12 +66,45 @@ export default function App() {
             })
     }
 
-    function saveChangedTodo( todo:Todo ) {
+    function getNextStatus( status:TodoStatus ): TodoStatus | undefined {
+        switch (status) {
+            case "OPEN"       : return "IN_PROGRESS"
+            case "IN_PROGRESS": return "DONE"
+            default: return undefined
+        }
+    }
+
+    function advanceTodo( id:string ) {
+        const filteredTodos = todoList.filter(e => e.id === id);
+        if (filteredTodos.length < 1) return
+
+        const todo: Todo = filteredTodos[0]
+        const nextStatus = getNextStatus(todo.status);
+        if (!nextStatus) return
+
+        const advancedTodo: Todo = {
+            ...todo,
+            status: nextStatus
+        }
+
+        axios
+            .put('/api/todo/'+todo.id, advancedTodo )
+            .then(response => {
+                if (response.status != 200)
+                    throw {error: "Got wrong status on advance entry: " + response.status}
+                setReload( !reload )
+            })
+            .catch(reason => {
+                console.error(reason)
+            })
+    }
+
+    function updateTodo( todo:Todo ) {
         axios
             .put('/api/todo/'+todo.id, todo )
             .then(response => {
                 if (response.status != 200)
-                    throw {error: "Got wrong status on delete entry: " + response.status}
+                    throw {error: "Got wrong status on update entry: " + response.status}
                 setReload( !reload )
             })
             .catch(reason => {
@@ -83,8 +116,8 @@ export default function App() {
         <>
             <h1>{"Todo"} List</h1>
             <Routes>
-                <Route path="/" element={<TodoList todoList={todoList} addTodo={addTodo} deleteTodo={deleteTodo}/>}/>
-                <Route path="/edit/:id" element={<EditTodo todoList={todoList} saveChanges={saveChangedTodo}/>}/>
+                <Route path="/"         element={<TodoList todoList={todoList} addTodo={addTodo} deleteTodo={deleteTodo} advanceTodo={advanceTodo}/>}/>
+                <Route path="/edit/:id" element={<EditTodo todoList={todoList} saveChanges={updateTodo}/>}/>
             </Routes>
         </>
     )

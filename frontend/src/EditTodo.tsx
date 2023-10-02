@@ -1,11 +1,10 @@
-import {Todo} from "./Types.tsx";
+import {Todo, TodoCallback} from "./Types.tsx";
 import {useParams} from "react-router-dom";
-import {EditTodoForm, SaveEditChangesCallback as SaveEditChangesCallback_ } from "./EditTodoForm.tsx";
+import {EditTodoForm} from "./EditTodoForm.tsx";
 
-export type SaveEditChangesCallback = SaveEditChangesCallback_;
 type EditTodoProps = {
     todoList: Todo[]
-    saveChanges: SaveEditChangesCallback
+    saveChanges: TodoCallback
 }
 
 export function EditTodo( props:EditTodoProps ) {
