@@ -6,6 +6,7 @@ type AddTodoProps = {
 
 export default function AddTodo( props: AddTodoProps ) {
     const [description, setDescription] = useState<string>("")
+    console.debug("AddTodo rendered")
 
     function onSubmit( event:FormEvent<HTMLFormElement> ) {
         event.preventDefault()

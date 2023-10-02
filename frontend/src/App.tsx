@@ -7,6 +7,7 @@ import AddTodo from "./AddTodo.tsx";
 
 function App() {
     const [todoList, setTodoList] = useState<Todo[]>([])
+    console.debug("App rendered: "+todoList.length+" TODO entries")
 
     useEffect( loadData, [] )
 
@@ -16,7 +17,6 @@ function App() {
             .then(response => {
                 if (response.status != 200)
                     throw {error: "Got wrong status on load data: " + response.status}
-
                 return response.data;
             })
             .then(data => {
@@ -35,7 +35,21 @@ function App() {
             description: description,
             status: "OPEN"
         }
-        setTodoList([ ...todoList, newTodo ]);
+        axios
+            .post('/api/todo', newTodo)
+            .then(response => {
+                if (response.status != 200)
+                    throw {error: "Got wrong status on load data: " + response.status}
+                return response.data;
+            })
+            .then(data => {
+                console.log("New Todo added")
+                console.log(data)
+                setTodoList([ ...todoList, data ]);
+            })
+            .catch(reason => {
+                console.error(reason)
+            })
     }
 
     return (
@@ -46,19 +60,19 @@ function App() {
                 <div className="TodoListContainer">
                     Open
                     <div className="TodoList">
-                        {todoList.filter( e=> e.status=="OPEN").map( (e: Todo) => <TodoCard todo={e}/>)}
+                        {todoList.filter( e=> e.status=="OPEN").map( (e: Todo) => <TodoCard key={e.id} todo={e}/>)}
                     </div>
                 </div>
                 <div className="TodoListContainer">
                     Doing
                     <div className="TodoList">
-                        {todoList.filter( e=> e.status=="IN_PROGRESS").map( (e: Todo) => <TodoCard todo={e}/>)}
+                        {todoList.filter( e=> e.status=="IN_PROGRESS").map( (e: Todo) => <TodoCard key={e.id} todo={e}/>)}
                     </div>
                 </div>
                 <div className="TodoListContainer">
                     Done
                     <div className="TodoList">
-                        {todoList.filter( e=> e.status=="DONE").map( (e: Todo) => <TodoCard todo={e}/>)}
+                        {todoList.filter( e=> e.status=="DONE").map( (e: Todo) => <TodoCard key={e.id} todo={e}/>)}
                     </div>
                 </div>
             </div>
