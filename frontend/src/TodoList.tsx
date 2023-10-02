@@ -18,6 +18,7 @@ export default function TodoList( props: TodoListProps ) {
                 <TodoCard
                     key={e.id}
                     todo={e}
+                    hideStatus={true}
                     deleteTodo={withDelete ? props.deleteTodo : undefined}
                     advanceTodo={withAdvance ? props.advanceTodo : undefined}
                 />

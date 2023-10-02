@@ -5,6 +5,7 @@ import {Todo, TodoStatus} from "./Types.tsx";
 import TodoList from "./TodoList.tsx";
 import {Route, Routes} from "react-router-dom";
 import {EditTodo} from "./EditTodo.tsx";
+import TodoDetails from "./TodoDetails.tsx";
 
 export default function App() {
     const [reload, setReload] = useState<boolean>(false)
@@ -116,8 +117,31 @@ export default function App() {
         <>
             <h1>{"Todo"} List</h1>
             <Routes>
-                <Route path="/"         element={<TodoList todoList={todoList} addTodo={addTodo} deleteTodo={deleteTodo} advanceTodo={advanceTodo}/>}/>
-                <Route path="/edit/:id" element={<EditTodo todoList={todoList} saveChanges={updateTodo}/>}/>
+                <Route path="/"
+                       element={
+                            <TodoList
+                                todoList={todoList}
+                                addTodo={addTodo}
+                                deleteTodo={deleteTodo}
+                                advanceTodo={advanceTodo}
+                            />
+                        }
+                />
+                <Route path="/edit/:id"
+                       element={
+                            <EditTodo
+                                todoList={todoList}
+                                saveChanges={updateTodo}
+                            />
+                        }
+                />
+                <Route path="/details/:id"
+                       element={
+                           <TodoDetails
+                               todoList={todoList}
+                           />
+                       }
+                />
             </Routes>
         </>
     )

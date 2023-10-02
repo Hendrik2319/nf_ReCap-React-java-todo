@@ -5,6 +5,9 @@ type TodoCardProps = {
     todo: Todo
     deleteTodo?: IdCallback
     advanceTodo?: IdCallback
+    hideDetailsBtn?: boolean
+    hideEditBtn?: boolean
+    hideStatus?: boolean
 }
 
 export default function TodoCard( props: TodoCardProps ) {
@@ -22,12 +25,13 @@ export default function TodoCard( props: TodoCardProps ) {
 
     return (
         <div className="TodoCard">
-            <div>{props.todo.id}</div>
-            <div>{props.todo.description}</div>
-            <div>{props.todo.status}</div>
-            <button onClick={() => navigate("/edit/"+props.todo.id)}>edit</button>
-            {props. deleteTodo && <button onClick={ deleteEntry}>delete</button>}
-            {props.advanceTodo && <button onClick={advanceEntry}>advance</button>}
+            <div className="Id">id: {props.todo.id}</div>
+            <div className="Description">{props.todo.description}</div>
+            {!props.hideStatus     && <div className="Status">{props.todo.status}</div>}
+            {!props.hideDetailsBtn && <button onClick={() => navigate("/details/" + props.todo.id)}>details</button>}
+            {!props.hideEditBtn    && <button onClick={() => navigate("/edit/" + props.todo.id)}>edit</button>}
+            {props. deleteTodo && <button className="DeleteBtn"  onClick={ deleteEntry}>delete</button>}
+            {props.advanceTodo && <button className="AdvanceBtn" onClick={advanceEntry}>advance</button>}
         </div>
     )
 }

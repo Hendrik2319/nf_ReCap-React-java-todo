@@ -43,3 +43,15 @@ body {
     display: flex;
     flex-direction: column;
 }
+
+.TodoCard button {
+    border: 1px solid #aaa;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+}
+.TodoCard .Id { font-size: 0.6em; color: #777; }
+.TodoCard .Description { margin: 1em 0.5em; }
+.TodoCard .Status { color: blue; }
+.TodoCard .DeleteBtn { background-color: #ffcccc; }
+.TodoCard .AdvanceBtn { background-color: #ccccff; }
+
