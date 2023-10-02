@@ -2,9 +2,31 @@ body {
     font-family: sans-serif;
 }
 
+.ListOfTodoLists {
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    /*
+    border: 1px solid #f00;
+    border-radius: 0.6em;
+    */
+}
+
+.TodoListContainer {
+    flex-grow: 1;
+    /*
+    border: 1px solid #070;
+    border-radius: 0.6em;
+    */
+}
 .TodoList {
     display: flex;
     flex-wrap: wrap;
+    flex-direction: column;
+    /*
+    border: 1px solid #00f;
+    border-radius: 0.6em;
+    */
 }
 .TodoCard {
     border: 1px solid #eee;

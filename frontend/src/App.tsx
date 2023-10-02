@@ -30,9 +30,26 @@ function App() {
 
     return (
         <>
-            <h1>Todo List</h1>
-            <div className="TodoList">
-                {todoList.map( (e: Todo) => <TodoCard todo={e}/>)}
+            <h1>{"To"+"do"} List</h1>
+            <div className="ListOfTodoLists">
+                <div className="TodoListContainer">
+                    Open
+                    <div className="TodoList">
+                        {todoList.filter( e=> e.status=="OPEN").map( (e: Todo) => <TodoCard todo={e}/>)}
+                    </div>
+                </div>
+                <div className="TodoListContainer">
+                    Doing
+                    <div className="TodoList">
+                        {todoList.filter( e=> e.status=="IN_PROGRESS").map( (e: Todo) => <TodoCard todo={e}/>)}
+                    </div>
+                </div>
+                <div className="TodoListContainer">
+                    Done
+                    <div className="TodoList">
+                        {todoList.filter( e=> e.status=="DONE").map( (e: Todo) => <TodoCard todo={e}/>)}
+                    </div>
+                </div>
             </div>
         </>
     )
