@@ -1,0 +1,15 @@
+body {
+    font-family: sans-serif;
+}
+
+.TodoList {
+    display: flex;
+    flex-wrap: wrap;
+}
+.TodoCard {
+    border: 1px solid #eee;
+    border-radius: 0.6em;
+    padding: 0.6em;
+    margin: 0.2em;
+    background-color: #f7f7f7;
+}
