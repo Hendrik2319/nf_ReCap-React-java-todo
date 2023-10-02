@@ -1,10 +1,11 @@
 import {ChangeEvent, FormEvent, useState} from "react";
 
+export type AddTodoCallback = (description: string ) => void
 type AddTodoProps = {
-    addTodo: ( description: string ) => void
+    addTodo: AddTodoCallback
 }
 
-export default function AddTodo( props: AddTodoProps ) {
+export function AddTodo( props: AddTodoProps ) {
     const [description, setDescription] = useState<string>("")
     console.debug("AddTodo rendered")
 

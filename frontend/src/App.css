@@ -2,9 +2,10 @@ body {
     font-family: sans-serif;
 }
 
-.ListOfTodoLists {
+.AllTodoLists {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: stretch;
     /*
     border: 1px solid #f00;
@@ -13,14 +14,14 @@ body {
     margin-top: 1em;
 }
 
-.TodoListContainer {
+.CardGroupContainer {
     flex-grow: 1;
     /*
     border: 1px solid #070;
     border-radius: 0.6em;
     */
 }
-.TodoList {
+.CardGroup {
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;

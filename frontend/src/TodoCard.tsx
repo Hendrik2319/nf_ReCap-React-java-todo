@@ -1,11 +1,12 @@
 import {Todo} from "./Types.tsx";
 
+export type DeleteTodoCallback = (id: string) => void;
 type TodoCardProps = {
     todo: Todo
-    deleteTodo: ( id:string ) => void
+    deleteTodo: DeleteTodoCallback
 }
 
-export default function TodoCard( props: TodoCardProps ) {
+export function TodoCard( props: TodoCardProps ) {
 
     function deleteEntry() {
         if (props.todo.id)
