@@ -30,7 +30,8 @@ body {
     border-radius: 0.6em;
     */
 }
-.TodoCard {
+
+.TodoCard, .AddTodo, .EditTodoForm {
     border: 1px solid #eee;
     border-radius: 0.6em;
     padding: 0.6em;
@@ -38,10 +39,7 @@ body {
     background-color: #f7f7f7;
 }
 
-.AddTodo {
-    border: 1px solid #eee;
-    border-radius: 0.6em;
-    padding: 0.6em;
-    margin: 0.2em;
-    background-color: #f7f7f7;
+.EditTodoForm {
+    display: flex;
+    flex-direction: column;
 }

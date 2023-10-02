@@ -1,8 +1,10 @@
 import './App.css'
 import axios from "axios";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Todo} from "./Types.tsx";
 import TodoList from "./TodoList.tsx";
+import {Route, Routes} from "react-router-dom";
+import {EditTodo} from "./EditTodo.tsx";
 
 export default function App() {
     const [reload, setReload] = useState<boolean>(false)
@@ -64,10 +66,26 @@ export default function App() {
             })
     }
 
+    function saveChangedTodo( todo:Todo ) {
+        axios
+            .put('/api/todo/'+todo.id, todo )
+            .then(response => {
+                if (response.status != 200)
+                    throw {error: "Got wrong status on delete entry: " + response.status}
+                setReload( !reload )
+            })
+            .catch(reason => {
+                console.error(reason)
+            })
+    }
+
     return (
         <>
             <h1>{"Todo"} List</h1>
-            <TodoList todoList={todoList} addTodo={addTodo} deleteTodo={deleteTodo}/>
+            <Routes>
+                <Route path="/" element={<TodoList todoList={todoList} addTodo={addTodo} deleteTodo={deleteTodo}/>}/>
+                <Route path="/edit/:id" element={<EditTodo todoList={todoList} saveChanges={saveChangedTodo}/>}/>
+            </Routes>
         </>
     )
 }
