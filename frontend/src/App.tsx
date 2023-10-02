@@ -3,6 +3,7 @@ import axios from "axios";
 import {useEffect, useState} from "react";
 import {Todo} from "./Types.tsx";
 import TodoCard from "./TodoCard.tsx";
+import AddTodo from "./AddTodo.tsx";
 
 function App() {
     const [todoList, setTodoList] = useState<Todo[]>([])
@@ -28,9 +29,19 @@ function App() {
             })
     }
 
+    function addTodo( description: string ) {
+        const newTodo: Todo = {
+            id: null,
+            description: description,
+            status: "OPEN"
+        }
+        setTodoList([ ...todoList, newTodo ]);
+    }
+
     return (
         <>
             <h1>{"To"+"do"} List</h1>
+            <AddTodo addTodo={addTodo}/>
             <div className="ListOfTodoLists">
                 <div className="TodoListContainer">
                     Open

@@ -10,6 +10,7 @@ body {
     border: 1px solid #f00;
     border-radius: 0.6em;
     */
+    margin-top: 1em;
 }
 
 .TodoListContainer {
@@ -29,6 +30,14 @@ body {
     */
 }
 .TodoCard {
+    border: 1px solid #eee;
+    border-radius: 0.6em;
+    padding: 0.6em;
+    margin: 0.2em;
+    background-color: #f7f7f7;
+}
+
+.AddTodo {
     border: 1px solid #eee;
     border-radius: 0.6em;
     padding: 0.6em;
