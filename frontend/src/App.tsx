@@ -23,8 +23,8 @@ export default function App() {
                 return response.data;
             })
             .then(data => {
-                console.log("Data loaded")
-                console.log(data)
+                console.debug("App -> data loaded")
+                console.debug(data)
                 setTodoList(data)
             })
             .catch(reason => {
@@ -45,8 +45,8 @@ export default function App() {
                 return response.data;
             })
             .then(data => {
-                console.log("New Todo added")
-                console.log(data)
+                console.debug("App -> new Todo added")
+                console.debug(data)
                 setTodoList([ ...todoList, data ]);
             })
             .catch(reason => {
@@ -138,7 +138,7 @@ export default function App() {
                 <Route path="/details/:id"
                        element={
                            <TodoDetails
-                               todoList={todoList}
+                               callIndex={Math.random()}
                            />
                        }
                 />
