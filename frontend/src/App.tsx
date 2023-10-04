@@ -1,4 +1,5 @@
 import './App.css'
+import './FloatingDialogs.css'
 import axios from "axios";
 import React, {useEffect, useState} from "react";
 import {DEBUG, Todo, TodoStatus} from "./Types.tsx";
@@ -117,9 +118,25 @@ export default function App() {
             })
     }
 
+    function showDialog( visible:boolean ) {
+        const dialog1 = document.querySelector('#dialog1')
+        if (dialog1) {
+            if (visible)
+                dialog1.classList.add('visible')
+            else
+                dialog1.classList.remove('visible')
+        }
+    }
+
     return (
         <>
             <h1>{"Todo"} List</h1>
+            <button onClick={() => showDialog(true)}>Show Dialog</button>
+            <div id="dialog1" className="DialogBackground">
+                <div className="Dialog">
+                    <button onClick={() => showDialog(false)}>close</button>
+                </div>
+            </div>
             <Routes>
                 <Route path="/"
                        element={
