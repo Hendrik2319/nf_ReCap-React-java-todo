@@ -3,7 +3,7 @@ import axios from "axios";
 import React, {useEffect, useState} from "react";
 import {Todo, TodoStatus} from "./Types.tsx";
 import TodoList from "./TodoList.tsx";
-import {Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import {EditTodo} from "./EditTodo.tsx";
 import TodoDetails from "./TodoDetails.tsx";
 
@@ -137,11 +137,10 @@ export default function App() {
                 />
                 <Route path="/details/:id"
                        element={
-                           <TodoDetails
-                               callIndex={Math.random()}
-                           />
+                           <TodoDetails/>
                        }
                 />
+                <Route path={"/*"} element={<Navigate to={"/"}/>}/>
             </Routes>
         </>
     )

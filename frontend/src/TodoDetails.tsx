@@ -4,18 +4,14 @@ import TodoCard from "./TodoCard.tsx";
 import {useEffect, useState} from "react";
 import axios from "axios";
 
-type Props = {
-    callIndex: number
-}
-
-export default function TodoDetails( props: Props ) {
+export default function TodoDetails() {
     const urlParams = useParams()
     const id = urlParams.id
+    const [wasLoaded, setLoaded] = useState<boolean>(false)
     const [todo, setLoadedTodo] = useState<Todo>()
-    const [savedCallIndex, saveCallIndex] = useState<number>(0)
-    console.debug("TodoDetails rendered: id:\""+id+"\", callIndex:"+props.callIndex+"|"+savedCallIndex)
+    console.debug(`Rendering TodoDetails { id:"${id}", wasLoaded:${wasLoaded}, todo:${todo ? '###' : '--'} }`)
 
-    useEffect( loadData, [ props.callIndex, id ])
+    useEffect( loadData, [id])
 
     const navigate = useNavigate();
 
@@ -37,32 +33,20 @@ export default function TodoDetails( props: Props ) {
                     console.debug("TodoDetails -> no data with id \""+id+"\" found")
                     setLoadedTodo( undefined )
                 }
-                saveCallIndex(props.callIndex)
+                setLoaded(true)
             })
             .catch(reason => {
                 console.error(reason)
             })
     }
 
-    if (props.callIndex !== savedCallIndex)
-        return (
-            <>
-                --- Loading ---<br/>
-                <button onClick={() => {navigate("/")}}>Back</button>
-            </>
-        )
-
-    if (!todo)
-        return (
-            <>
-                {"Todo"} with id "{id}" not found<br/>
-                <button onClick={() => {navigate("/")}}>Back</button>
-            </>
-        )
-
     return (
         <>
-            <TodoCard todo={todo} hideDetailsBtn={true} hideEditBtn={true}/>
+            {
+                !wasLoaded ? <>--- Loading ---<br/></> :
+                    !todo ? <>{"Todo"} with id "{id}" not found<br/></> :
+                        <TodoCard todo={todo} hideDetailsBtn={true} hideEditBtn={true}/>
+            }
             <button onClick={() => {navigate("/")}}>Back</button>
         </>
     )
