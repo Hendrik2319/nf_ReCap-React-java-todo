@@ -1,4 +1,5 @@
 import {ChangeEvent, FormEvent, useState} from "react";
+import {DEBUG} from "./Types.tsx";
 
 export type AddTodoCallback = (description: string ) => void
 type AddTodoProps = {
@@ -7,7 +8,7 @@ type AddTodoProps = {
 
 export function AddTodo( props: AddTodoProps ) {
     const [description, setDescription] = useState<string>("")
-    console.debug("AddTodo rendered")
+    if (DEBUG) console.debug(`Rendering AddTodo { description:${description} }`)
 
     function onSubmit( event:FormEvent<HTMLFormElement> ) {
         event.preventDefault()
@@ -25,7 +26,7 @@ export function AddTodo( props: AddTodoProps ) {
 
     return (
         <form className="AddTodo" onSubmit={onSubmit}>
-            New {"TO"+"DO"} entry:
+            New {"TODO"} entry:
             <input value={description} onChange={onChange}/>
             <button>Add</button>
         </form>

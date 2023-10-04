@@ -1,3 +1,5 @@
+export const DEBUG = true
+
 export type Todo = {
     id?: string,
     description: string,

@@ -1,5 +1,5 @@
 import {ChangeEvent, FormEvent, useEffect, useState} from "react";
-import {Todo, TodoCallback} from "./Types.tsx";
+import {DEBUG, Todo, TodoCallback} from "./Types.tsx";
 import {useNavigate} from "react-router-dom";
 
 type Props = {
@@ -14,7 +14,7 @@ export function EditTodoForm( props:Props ) {
         [ props.selectedEntry ]
     )
     const navigate = useNavigate();
-    console.debug("EditTodoForm rendered: id:\""+props.selectedEntry.id+"\"")
+    if (DEBUG) console.debug(`Rendering EditTodoForm { id:"${props.selectedEntry.id}" }`)
 
     function updateEntryValue( name:string, value:string ) {
         updateEntry( {

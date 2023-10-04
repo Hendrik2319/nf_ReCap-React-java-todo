@@ -1,7 +1,7 @@
 import './App.css'
 import axios from "axios";
 import React, {useEffect, useState} from "react";
-import {Todo, TodoStatus} from "./Types.tsx";
+import {DEBUG, Todo, TodoStatus} from "./Types.tsx";
 import TodoList from "./TodoList.tsx";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {EditTodo} from "./EditTodo.tsx";
@@ -10,7 +10,7 @@ import TodoDetails from "./TodoDetails.tsx";
 export default function App() {
     const [reload, setReload] = useState<boolean>(false)
     const [todoList, setTodoList] = useState<Todo[]>([])
-    console.debug("App rendered: "+todoList.length+" TODO entries")
+    if (DEBUG) console.debug(`Rendering App { todoList: ${todoList.length} TODO entries }`)
 
     useEffect( loadData, [ reload ] )
 
@@ -23,8 +23,10 @@ export default function App() {
                 return response.data;
             })
             .then(data => {
-                console.debug("App -> data loaded")
-                console.debug(data)
+                if (DEBUG) {
+                    console.debug("App -> data loaded")
+                    console.debug(data)
+                }
                 setTodoList(data)
             })
             .catch(reason => {
@@ -45,8 +47,10 @@ export default function App() {
                 return response.data;
             })
             .then(data => {
-                console.debug("App -> new Todo added")
-                console.debug(data)
+                if (DEBUG) {
+                    console.debug("App -> new Todo added")
+                    console.debug(data)
+                }
                 setTodoList([ ...todoList, data ]);
             })
             .catch(reason => {

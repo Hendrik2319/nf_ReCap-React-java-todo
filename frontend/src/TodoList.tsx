@@ -1,4 +1,4 @@
-import {IdCallback, Todo, TodoStatus} from "./Types.tsx";
+import {DEBUG, IdCallback, Todo, TodoStatus} from "./Types.tsx";
 import TodoCard from "./TodoCard.tsx";
 import {AddTodo, AddTodoCallback} from "./AddTodo.tsx";
 
@@ -10,6 +10,7 @@ type TodoListProps = {
 }
 
 export default function TodoList( props: TodoListProps ) {
+    if (DEBUG) console.debug(`Rendering TodoList { props.todoList: ${props.todoList.length} TODO entries }`)
 
     function generateCards( status:TodoStatus, withAdvance:boolean, withDelete:boolean ) {
         return props.todoList

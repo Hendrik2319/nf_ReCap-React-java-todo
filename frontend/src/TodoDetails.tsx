@@ -1,4 +1,4 @@
-import {Todo} from "./Types.tsx";
+import {DEBUG, Todo} from "./Types.tsx";
 import {useNavigate, useParams} from "react-router-dom";
 import TodoCard from "./TodoCard.tsx";
 import {useEffect, useState} from "react";
@@ -9,14 +9,14 @@ export default function TodoDetails() {
     const id = urlParams.id
     const [wasLoaded, setLoaded] = useState<boolean>(false)
     const [todo, setLoadedTodo] = useState<Todo>()
-    console.debug(`Rendering TodoDetails { id:"${id}", wasLoaded:${wasLoaded}, todo:${todo ? '###' : '--'} }`)
+    if (DEBUG) console.debug(`Rendering TodoDetails { id:"${id}", wasLoaded:${wasLoaded}, todo:${todo ? '###' : '--'} }`)
 
     useEffect( loadData, [id])
 
     const navigate = useNavigate();
 
     function loadData() {
-        console.debug("TodoDetails -> load data")
+        if (DEBUG) console.debug("TodoDetails -> load data")
         axios
             .get('/api/todo/'+id )
             .then(response => {
@@ -26,11 +26,13 @@ export default function TodoDetails() {
             })
             .then(data => {
                 if (data) {
-                    console.debug("TodoDetails -> data loaded")
-                    console.debug(data)
+                    if (DEBUG) {
+                        console.debug("TodoDetails -> data loaded")
+                        console.debug(data)
+                    }
                     setLoadedTodo(data)
                 } else {
-                    console.debug("TodoDetails -> no data with id \""+id+"\" found")
+                    if (DEBUG) console.debug("TodoDetails -> no data with id \""+id+"\" found")
                     setLoadedTodo( undefined )
                 }
                 setLoaded(true)
