@@ -1,4 +1,4 @@
-import {IdCallback, Todo} from "./Types.tsx";
+import {IdCallback, Todo} from "../Types.tsx";
 import {useNavigate} from "react-router-dom";
 
 type TodoCardProps = {

@@ -1,5 +1,5 @@
 import {ChangeEvent, FormEvent, useState} from "react";
-import {DEBUG} from "./Types.tsx";
+import {DEBUG} from "../Types.tsx";
 
 export type AddTodoCallback = (description: string ) => void
 type AddTodoProps = {

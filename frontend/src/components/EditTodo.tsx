@@ -1,4 +1,4 @@
-import {DEBUG, Todo, TodoCallback} from "./Types.tsx";
+import {DEBUG, Todo, TodoCallback} from "../Types.tsx";
 import {useParams} from "react-router-dom";
 import {EditTodoForm} from "./EditTodoForm.tsx";
 

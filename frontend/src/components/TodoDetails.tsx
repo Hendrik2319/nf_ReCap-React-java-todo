@@ -1,4 +1,4 @@
-import {DEBUG, Todo} from "./Types.tsx";
+import {DEBUG, Todo} from "../Types.tsx";
 import {useNavigate, useParams} from "react-router-dom";
 import TodoCard from "./TodoCard.tsx";
 import {useEffect, useState} from "react";

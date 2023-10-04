@@ -2,10 +2,10 @@ import './App.css'
 import axios from "axios";
 import React, {useEffect, useState} from "react";
 import {DEBUG, Todo, TodoStatus} from "./Types.tsx";
-import TodoList from "./TodoList.tsx";
+import TodoList from "./components/TodoList.tsx";
 import {Navigate, Route, Routes} from "react-router-dom";
-import {EditTodo} from "./EditTodo.tsx";
-import TodoDetails from "./TodoDetails.tsx";
+import {EditTodo} from "./components/EditTodo.tsx";
+import TodoDetails from "./components/TodoDetails.tsx";
 
 export default function App() {
     const [reload, setReload] = useState<boolean>(false)

@@ -1,4 +1,4 @@
-import {DEBUG, IdCallback, Todo, TodoStatus} from "./Types.tsx";
+import {DEBUG, IdCallback, Todo, TodoStatus} from "../Types.tsx";
 import TodoCard from "./TodoCard.tsx";
 import {AddTodo, AddTodoCallback} from "./AddTodo.tsx";
 

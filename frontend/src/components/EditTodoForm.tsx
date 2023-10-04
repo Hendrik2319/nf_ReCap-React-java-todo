@@ -1,5 +1,5 @@
 import {ChangeEvent, FormEvent, useEffect, useState} from "react";
-import {DEBUG, Todo, TodoCallback} from "./Types.tsx";
+import {DEBUG, Todo, TodoCallback} from "../Types.tsx";
 import {useNavigate} from "react-router-dom";
 
 type Props = {
