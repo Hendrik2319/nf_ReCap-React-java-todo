@@ -1,37 +1,21 @@
 import './App.css'
-import axios from "axios";
 import React, {useEffect, useState} from "react";
-import {DEBUG, Todo, TodoStatus} from "./Types.tsx";
+import {DEBUG, getNextStatus, Todo} from "./Types.tsx";
 import TodoList from "./components/TodoList.tsx";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {EditTodo} from "./components/EditTodo.tsx";
 import TodoDetails from "./components/TodoDetails.tsx";
+import {addTodo_, deleteTodo_, loadData_, updateTodo_} from "./services/ApiService.tsx";
 
 export default function App() {
-    const [reload, setReload] = useState<boolean>(false)
+    const [reloadState, setReloadState] = useState<boolean>(false)
     const [todoList, setTodoList] = useState<Todo[]>([])
     if (DEBUG) console.debug(`Rendering App { todoList: ${todoList.length} TODO entries }`)
 
-    useEffect( loadData, [ reload ] )
+    useEffect( loadData, [ reloadState ] )
 
     function loadData() {
-        axios
-            .get('/api/todo')
-            .then(response => {
-                if (response.status != 200)
-                    throw {error: "Got wrong status on load data: " + response.status}
-                return response.data;
-            })
-            .then(data => {
-                if (DEBUG) {
-                    console.debug("App -> data loaded")
-                    console.debug(data)
-                }
-                setTodoList(data)
-            })
-            .catch(reason => {
-                console.error(reason)
-            })
+        loadData_( setTodoList, 'App' )
     }
 
     function addTodo( description: string ) {
@@ -39,44 +23,19 @@ export default function App() {
             description: description,
             status: "OPEN"
         }
-        axios
-            .post('/api/todo', newTodo)
-            .then(response => {
-                if (response.status != 200)
-                    throw {error: "Got wrong status on load data: " + response.status}
-                return response.data;
-            })
-            .then(data => {
-                if (DEBUG) {
-                    console.debug("App -> new Todo added")
-                    console.debug(data)
-                }
-                setTodoList([ ...todoList, data ]);
-            })
-            .catch(reason => {
-                console.error(reason)
-            })
+        addTodo_(
+            newTodo,
+            savedTodo => setTodoList([ ...todoList, savedTodo ]),
+            'App'
+        )
+    }
+
+    function reload() {
+        setReloadState(!reloadState);
     }
 
     function deleteTodo( id:string ) {
-        axios
-            .delete('/api/todo/'+id)
-            .then(response => {
-                if (response.status != 200)
-                    throw {error: "Got wrong status on delete entry: " + response.status}
-                setReload( !reload )
-            })
-            .catch(reason => {
-                console.error(reason)
-            })
-    }
-
-    function getNextStatus( status:TodoStatus ): TodoStatus | undefined {
-        switch (status) {
-            case "OPEN"       : return "IN_PROGRESS"
-            case "IN_PROGRESS": return "DONE"
-            default: return undefined
-        }
+        deleteTodo_( id, reload )
     }
 
     function advanceTodo( id:string ) {
@@ -92,29 +51,11 @@ export default function App() {
             status: nextStatus
         }
 
-        axios
-            .put('/api/todo/'+todo.id, advancedTodo )
-            .then(response => {
-                if (response.status != 200)
-                    throw {error: "Got wrong status on advance entry: " + response.status}
-                setReload( !reload )
-            })
-            .catch(reason => {
-                console.error(reason)
-            })
+        updateTodo_( advancedTodo, reload )
     }
 
     function updateTodo( todo:Todo ) {
-        axios
-            .put('/api/todo/'+todo.id, todo )
-            .then(response => {
-                if (response.status != 200)
-                    throw {error: "Got wrong status on update entry: " + response.status}
-                setReload( !reload )
-            })
-            .catch(reason => {
-                console.error(reason)
-            })
+        updateTodo_( todo, reload )
     }
 
     return (
