@@ -5,37 +5,27 @@ import TodoList from "./components/TodoList.tsx";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {EditTodo} from "./components/EditTodo.tsx";
 import TodoDetails from "./components/TodoDetails.tsx";
-import {addTodo_, deleteTodo_, loadData_, updateTodo_} from "./services/ApiService.tsx";
+import {ApiService, createApiService} from "./services/ApiService.tsx";
 
 export default function App() {
     const [reloadState, setReloadState] = useState<boolean>(false)
     const [todoList, setTodoList] = useState<Todo[]>([])
     if (DEBUG) console.debug(`Rendering App { todoList: ${todoList.length} TODO entries }`)
 
-    useEffect( loadData, [ reloadState ] )
+    const apiService: ApiService = createApiService( 'App',
+        setTodoList,
+        savedTodo => setTodoList([ ...todoList, savedTodo ]),
+        () => setReloadState(!reloadState)
+    );
 
-    function loadData() {
-        loadData_( setTodoList, 'App' )
-    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect( () => apiService.getAll(), [ reloadState ] )
 
     function addTodo( description: string ) {
-        const newTodo: Todo = {
+        apiService.add({
             description: description,
             status: "OPEN"
-        }
-        addTodo_(
-            newTodo,
-            savedTodo => setTodoList([ ...todoList, savedTodo ]),
-            'App'
-        )
-    }
-
-    function reload() {
-        setReloadState(!reloadState);
-    }
-
-    function deleteTodo( id:string ) {
-        deleteTodo_( id, reload )
+        })
     }
 
     function advanceTodo( id:string ) {
@@ -51,11 +41,7 @@ export default function App() {
             status: nextStatus
         }
 
-        updateTodo_( advancedTodo, reload )
-    }
-
-    function updateTodo( todo:Todo ) {
-        updateTodo_( todo, reload )
+        apiService.update( advancedTodo )
     }
 
     return (
@@ -67,7 +53,7 @@ export default function App() {
                             <TodoList
                                 todoList={todoList}
                                 addTodo={addTodo}
-                                deleteTodo={deleteTodo}
+                                deleteTodo={apiService.delete}
                                 advanceTodo={advanceTodo}
                             />
                         }
@@ -76,7 +62,7 @@ export default function App() {
                        element={
                             <EditTodo
                                 todoList={todoList}
-                                saveChanges={updateTodo}
+                                saveChanges={apiService.update}
                             />
                         }
                 />
