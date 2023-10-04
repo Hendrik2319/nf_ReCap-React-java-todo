@@ -6,6 +6,8 @@ import TodoList from "./TodoList.tsx";
 import {Route, Routes} from "react-router-dom";
 import {EditTodo} from "./EditTodo.tsx";
 import TodoDetails from "./TodoDetails.tsx";
+import TestList from "./test/TestList.tsx";
+import SingleTestCard from "./test/SingleTestCard.tsx";
 
 export default function App() {
     const [reload, setReload] = useState<boolean>(false)
@@ -142,6 +144,8 @@ export default function App() {
                            />
                        }
                 />
+                <Route path="/test/"       element={ <TestList/> }/>
+                <Route path="/test/:index" element={ <SingleTestCard/> }/>
             </Routes>
         </>
     )
