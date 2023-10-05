@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import {DEBUG, getNextStatus, Todo} from "./Types.tsx";
 import TodoList from "./components/TodoList.tsx";
 import {Navigate, Route, Routes} from "react-router-dom";
-import {EditTodo} from "./components/EditTodo.tsx";
+import {EditTodo, EditTodoOptions} from "./components/EditTodo.tsx";
 import {TodoDetailsOptions, TodoDetailsWrapper} from "./components/TodoDetails.tsx";
 import {ApiService, createApiService} from "./services/ApiService.tsx";
 import {AddTodo} from "./components/AddTodo.tsx";
@@ -63,11 +63,24 @@ export default function App() {
                 />
         )
 
+    const editDialog =
+        createDialog<EditTodoOptions>(
+            'editDialog',
+            dialogControl =>
+                <EditTodo
+                    todoList={todoList}
+                    saveChanges={apiService.update}
+                    setInitFuntion={dialogControl.setInitFuntion}
+                    closeDialog={dialogControl.closeDialog}
+                />
+        )
+
     return (
         <>
             <h1>{"Todo"} List</h1>
             {addDialog.writeHTML()}
             {detailsDialog.writeHTML()}
+            {editDialog.writeHTML()}
             <Routes>
                 <Route path="/"
                        element={
@@ -75,16 +88,9 @@ export default function App() {
                                 todoList={todoList}
                                 showAddDialog={addDialog.showDialog}
                                 showDetailsDialog={detailsDialog.showDialog}
+                                showEditDialog={editDialog.showDialog}
                                 deleteTodo={apiService.delete}
                                 advanceTodo={advanceTodo}
-                            />
-                        }
-                />
-                <Route path="/edit/:id"
-                       element={
-                            <EditTodo
-                                todoList={todoList}
-                                saveChanges={apiService.update}
                             />
                         }
                 />

@@ -14,7 +14,7 @@ type Props = {
 
 export function TodoDetailsWrapper( props: Props ) {
     const [id, setId] = useState<string>("")
-    if (DEBUG) console.debug(`Rendering TodoDetailsWrapper`)
+    if (DEBUG) console.debug(`Rendering TodoDetailsWrapper { id:${id} }`)
     props.setInitFuntion((options: TodoDetailsOptions) => setId(options.id))
 
     return (
@@ -62,6 +62,6 @@ function TodoDetails( props: TodoDetailsOptions ) {
     return (
         !wasLoaded ? <>--- Loading ---<br/></> :
             !todo ? <>{"Todo"} with id "{props.id}" not found<br/></> :
-                <TodoCard todo={todo} hideEditBtn={true} noBox={true}/>
+                <TodoCard todo={todo} noBox={true}/>
     )
 }

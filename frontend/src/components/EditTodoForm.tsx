@@ -1,10 +1,10 @@
 import {ChangeEvent, FormEvent, useEffect, useState} from "react";
 import {DEBUG, Todo, TodoCallback} from "../Types.tsx";
-import {useNavigate} from "react-router-dom";
 
 type Props = {
     selectedEntry: Todo
     saveChanges: TodoCallback
+    closeDialog: ()=>void
 }
 
 export function EditTodoForm( props:Props ) {
@@ -13,7 +13,6 @@ export function EditTodoForm( props:Props ) {
         ()=> updateEntry(props.selectedEntry),
         [ props.selectedEntry ]
     )
-    const navigate = useNavigate();
     if (DEBUG) console.debug(`Rendering EditTodoForm { id:"${props.selectedEntry.id}" }`)
 
     function updateEntryValue( name:string, value:string ) {
@@ -34,11 +33,11 @@ export function EditTodoForm( props:Props ) {
     function saveChanges( event: FormEvent<HTMLFormElement> ) {
         event.preventDefault()
         props.saveChanges(selectedEntry)
-        navigate("/")
+        props.closeDialog()
     }
 
     return (
-        <form className="EditTodoForm Box" onSubmit={saveChanges}>
+        <form className="EditTodoForm" onSubmit={saveChanges}>
             <label>id          : {selectedEntry.id         }</label>
             <label>description : <input  name="description" value={selectedEntry.description} onChange={onChangeFcnI}/></label>
             <label>status      : <select name="status"      value={selectedEntry.status     } onChange={onChangeFcnS}>
@@ -48,7 +47,7 @@ export function EditTodoForm( props:Props ) {
             </select></label>
             <div>
                 <button>Save</button>
-                <button type="button" onClick={() => navigate("/")}>Cancel</button>
+                <button type="button" onClick={props.closeDialog}>Cancel</button>
             </div>
         </form>
     )
