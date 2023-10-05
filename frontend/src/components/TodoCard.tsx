@@ -26,7 +26,7 @@ export default function TodoCard( props: TodoCardProps ) {
 
     function showDetailsDialog() {
         if (props.showDetailsDialog && props.todo.id)
-            props.showDetailsDialog({ id:props.todo.id })
+            props.showDetailsDialog({ id:props.todo.id, callID:Math.random() })
     }
 
     function showEditDialog() {

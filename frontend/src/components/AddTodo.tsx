@@ -15,8 +15,7 @@ export function AddTodo( props: AddTodoProps ) {
         event.preventDefault()
         if (description.length !== 0) {
             props.addTodo(description)
-            props.closeDialog()
-            setDescription("")
+            closeDialog()
         } else {
             alert("Please enter a description before adding.")
         }
@@ -24,6 +23,11 @@ export function AddTodo( props: AddTodoProps ) {
 
     function onChange( event:ChangeEvent<HTMLInputElement> ) {
         setDescription(event.target.value)
+    }
+
+    function closeDialog() {
+        props.closeDialog()
+        setDescription("")
     }
 
     return (
@@ -34,7 +38,7 @@ export function AddTodo( props: AddTodoProps ) {
             </label>
             <br/>
             <button>Add</button>
-            <button type="button" onClick={props.closeDialog}>Cancel</button>
+            <button type="button" onClick={closeDialog}>Cancel</button>
         </form>
     )
 }

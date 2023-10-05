@@ -5,6 +5,7 @@ import axios from "axios";
 
 export type TodoDetailsOptions = {
     id: string
+    callID: number
 }
 
 type Props = {
@@ -14,12 +15,16 @@ type Props = {
 
 export function TodoDetailsWrapper( props: Props ) {
     const [id, setId] = useState<string>("")
+    const [callID, setCallId] = useState<number>(0)
     if (DEBUG) console.debug(`Rendering TodoDetailsWrapper { id:${id} }`)
-    props.setInitFuntion((options: TodoDetailsOptions) => setId(options.id))
+    props.setInitFuntion((options: TodoDetailsOptions) => {
+        setId(options.id)
+        setCallId(options.callID)
+    })
 
     return (
         <>
-            {id ? <TodoDetails id={id}/> : <>No ID specified.</>}
+            {id ? <TodoDetails id={id} callID={callID}/> : <>No ID specified.</>}
             <button onClick={props.closeDialog}>Close</button>
         </>
     )
@@ -30,7 +35,7 @@ function TodoDetails( props: TodoDetailsOptions ) {
     const [todo, setLoadedTodo] = useState<Todo>()
     if (DEBUG) console.debug(`Rendering TodoDetails { id:"${props.id}", wasLoaded:${wasLoaded}, todo:${todo ? '###' : '--'} }`)
 
-    useEffect( loadData, [props.id])
+    useEffect( loadData, [props.id, props.callID])
 
     function loadData() {
         if (DEBUG) console.debug("TodoDetails -> load data")
