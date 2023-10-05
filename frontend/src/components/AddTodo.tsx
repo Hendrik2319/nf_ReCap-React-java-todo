@@ -4,6 +4,7 @@ import {DEBUG} from "../Types.tsx";
 export type AddTodoCallback = (description: string ) => void
 type AddTodoProps = {
     addTodo: AddTodoCallback
+    closeDialog: () => void
 }
 
 export function AddTodo( props: AddTodoProps ) {
@@ -14,6 +15,7 @@ export function AddTodo( props: AddTodoProps ) {
         event.preventDefault()
         if (description.length !== 0) {
             props.addTodo(description)
+            props.closeDialog()
             setDescription("")
         } else {
             alert("Please enter a description before adding.")
@@ -25,10 +27,14 @@ export function AddTodo( props: AddTodoProps ) {
     }
 
     return (
-        <form className="AddTodo" onSubmit={onSubmit}>
-            New {"TODO"} entry:
-            <input value={description} onChange={onChange}/>
+        <form onSubmit={onSubmit}>
+            <label>
+                New {"TODO"} entry:<br/>
+                <input value={description} onChange={onChange}/>
+            </label>
+            <br/>
             <button>Add</button>
+            <button type="button" onClick={props.closeDialog}>Cancel</button>
         </form>
     )
 }

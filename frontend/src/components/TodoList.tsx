@@ -1,10 +1,9 @@
 import {DEBUG, IdCallback, Todo, TodoStatus} from "../Types.tsx";
 import TodoCard from "./TodoCard.tsx";
-import {AddTodo, AddTodoCallback} from "./AddTodo.tsx";
 
 type TodoListProps = {
     todoList: Todo[]
-    addTodo: AddTodoCallback
+    showAddDialog: () => void
     deleteTodo: IdCallback
     advanceTodo: IdCallback
 }
@@ -28,7 +27,7 @@ export default function TodoList( props: TodoListProps ) {
 
     return (
         <>
-            <AddTodo addTodo={props.addTodo}/>
+            <button onClick={props.showAddDialog}>Add {"TODO"}</button>
             <div className="AllTodoLists">
                 <div className="CardGroupContainer">Open  <div className="CardGroup">{generateCards("OPEN"       , true, false)}</div></div>
                 <div className="CardGroupContainer">Doing <div className="CardGroup">{generateCards("IN_PROGRESS", true, false)}</div></div>

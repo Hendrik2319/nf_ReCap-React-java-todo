@@ -31,7 +31,7 @@ body {
     */
 }
 
-.TodoCard, .AddTodo, .EditTodoForm {
+.TodoCard, .EditTodoForm {
     border: 1px solid #eee;
     border-radius: 0.6em;
     padding: 0.6em;
