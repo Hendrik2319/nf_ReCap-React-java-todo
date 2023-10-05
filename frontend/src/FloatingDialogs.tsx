@@ -1,5 +1,6 @@
 import './FloatingDialogs.css'
 import React, {ReactNode} from "react";
+import {DEBUG} from "./Types.tsx";
 
 export type DialogControl<DialogOptions> = {
     closeDialog: ()=>void
@@ -11,6 +12,7 @@ export function createDialog<DialogOptions>( id:string, writeContent: ( dialogCo
     let initFunction: undefined | ((options:DialogOptions)=> void) = undefined
 
     function showDialog( visible:boolean, options?:DialogOptions ) {
+        if (DEBUG) console.debug(`FloatingDialog[ ${id} ] -> showDialog( visible:${visible}, options:${options} )`)
         const dialog = document.querySelector('#'+id)
         if (dialog) {
             if (visible) {
@@ -20,7 +22,8 @@ export function createDialog<DialogOptions>( id:string, writeContent: ( dialogCo
             }
             else
                 dialog.classList.remove('visible')
-        }
+        } else
+            console.error(`Can't find FloatingDialog[ ${id} ]`)
     }
 
     function closeDialog() {

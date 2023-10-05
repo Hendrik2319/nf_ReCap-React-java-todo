@@ -1,24 +1,41 @@
 import {DEBUG, Todo} from "../Types.tsx";
-import {useNavigate, useParams} from "react-router-dom";
 import TodoCard from "./TodoCard.tsx";
 import {useEffect, useState} from "react";
 import axios from "axios";
 
-export default function TodoDetails() {
-    const urlParams = useParams()
-    const id = urlParams.id
+export type TodoDetailsOptions = {
+    id: string
+}
+
+type Props = {
+    closeDialog: ()=>void
+    setInitFuntion: ( initFunction: (options:TodoDetailsOptions)=> void ) => void
+}
+
+export function TodoDetailsWrapper( props: Props ) {
+    const [id, setId] = useState<string>("")
+    if (DEBUG) console.debug(`Rendering TodoDetailsWrapper`)
+    props.setInitFuntion((options: TodoDetailsOptions) => setId(options.id))
+
+    return (
+        <>
+            {id ? <TodoDetails id={id}/> : <>No ID specified.</>}
+            <button onClick={props.closeDialog}>Close</button>
+        </>
+    )
+}
+
+function TodoDetails( props: TodoDetailsOptions ) {
     const [wasLoaded, setLoaded] = useState<boolean>(false)
     const [todo, setLoadedTodo] = useState<Todo>()
-    if (DEBUG) console.debug(`Rendering TodoDetails { id:"${id}", wasLoaded:${wasLoaded}, todo:${todo ? '###' : '--'} }`)
+    if (DEBUG) console.debug(`Rendering TodoDetails { id:"${props.id}", wasLoaded:${wasLoaded}, todo:${todo ? '###' : '--'} }`)
 
-    useEffect( loadData, [id])
-
-    const navigate = useNavigate();
+    useEffect( loadData, [props.id])
 
     function loadData() {
         if (DEBUG) console.debug("TodoDetails -> load data")
         axios
-            .get('/api/todo/'+id )
+            .get('/api/todo/'+props.id )
             .then(response => {
                 if (response.status != 200)
                     throw {error: "Got wrong status on load data: " + response.status}
@@ -32,7 +49,7 @@ export default function TodoDetails() {
                     }
                     setLoadedTodo(data)
                 } else {
-                    if (DEBUG) console.debug("TodoDetails -> no data with id \""+id+"\" found")
+                    if (DEBUG) console.debug("TodoDetails -> no data with id \""+props.id+"\" found")
                     setLoadedTodo( undefined )
                 }
                 setLoaded(true)
@@ -43,13 +60,8 @@ export default function TodoDetails() {
     }
 
     return (
-        <>
-            {
-                !wasLoaded ? <>--- Loading ---<br/></> :
-                    !todo ? <>{"Todo"} with id "{id}" not found<br/></> :
-                        <TodoCard todo={todo} hideDetailsBtn={true} hideEditBtn={true}/>
-            }
-            <button onClick={() => {navigate("/")}}>Back</button>
-        </>
+        !wasLoaded ? <>--- Loading ---<br/></> :
+            !todo ? <>{"Todo"} with id "{props.id}" not found<br/></> :
+                <TodoCard todo={todo} hideEditBtn={true} />
     )
 }

@@ -1,11 +1,12 @@
 import {IdCallback, Todo} from "../Types.tsx";
 import {useNavigate} from "react-router-dom";
+import {TodoDetailsOptions} from "./TodoDetails.tsx";
 
 type TodoCardProps = {
     todo: Todo
     deleteTodo?: IdCallback
     advanceTodo?: IdCallback
-    hideDetailsBtn?: boolean
+    showDetailsDialog?: (options: TodoDetailsOptions) => void
     hideEditBtn?: boolean
     hideStatus?: boolean
 }
@@ -23,15 +24,20 @@ export default function TodoCard( props: TodoCardProps ) {
             props.advanceTodo(props.todo.id)
     }
 
+    function showDetailsDialog() {
+        if (props.showDetailsDialog && props.todo.id)
+            props.showDetailsDialog({ id:props.todo.id })
+    }
+
     return (
         <div className="TodoCard">
             <div className="Id">id: {props.todo.id}</div>
             <div className="Description">{props.todo.description}</div>
-            {!props.hideStatus     && <div className="Status">{props.todo.status}</div>}
-            {!props.hideDetailsBtn && <button onClick={() => navigate("/details/" + props.todo.id)}>details</button>}
-            {!props.hideEditBtn    && <button onClick={() => navigate("/edit/" + props.todo.id)}>edit</button>}
-            {props. deleteTodo && <button className="DeleteBtn"  onClick={ deleteEntry}>delete</button>}
-            {props.advanceTodo && <button className="AdvanceBtn" onClick={advanceEntry}>advance</button>}
+            {!props.hideStatus        && <div className="Status">{props.todo.status}</div>}
+            { props.showDetailsDialog && <button onClick={showDetailsDialog}>details</button>}
+            {!props.hideEditBtn       && <button onClick={() => navigate("/edit/" + props.todo.id)}>edit</button>}
+            { props. deleteTodo       && <button className="DeleteBtn"  onClick={ deleteEntry}>delete</button>}
+            { props.advanceTodo       && <button className="AdvanceBtn" onClick={advanceEntry}>advance</button>}
         </div>
     )
 }

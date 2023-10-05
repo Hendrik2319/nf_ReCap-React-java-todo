@@ -4,7 +4,7 @@ import {DEBUG, getNextStatus, Todo} from "./Types.tsx";
 import TodoList from "./components/TodoList.tsx";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {EditTodo} from "./components/EditTodo.tsx";
-import TodoDetails from "./components/TodoDetails.tsx";
+import {TodoDetailsOptions, TodoDetailsWrapper} from "./components/TodoDetails.tsx";
 import {ApiService, createApiService} from "./services/ApiService.tsx";
 import {AddTodo} from "./components/AddTodo.tsx";
 import {createDialog} from "./FloatingDialogs.tsx";
@@ -53,16 +53,28 @@ export default function App() {
                 <AddTodo addTodo={addTodo} closeDialog={dialogControl.closeDialog}/>
         )
 
+    const detailsDialog =
+        createDialog<TodoDetailsOptions>(
+            'detailsDialog',
+            dialogControl =>
+                <TodoDetailsWrapper
+                    setInitFuntion={dialogControl.setInitFuntion}
+                    closeDialog={dialogControl.closeDialog}
+                />
+        )
+
     return (
         <>
             <h1>{"Todo"} List</h1>
             {addDialog.writeHTML()}
+            {detailsDialog.writeHTML()}
             <Routes>
                 <Route path="/"
                        element={
                             <TodoList
                                 todoList={todoList}
                                 showAddDialog={addDialog.showDialog}
+                                showDetailsDialog={detailsDialog.showDialog}
                                 deleteTodo={apiService.delete}
                                 advanceTodo={advanceTodo}
                             />
@@ -75,11 +87,6 @@ export default function App() {
                                 saveChanges={apiService.update}
                             />
                         }
-                />
-                <Route path="/details/:id"
-                       element={
-                           <TodoDetails/>
-                       }
                 />
                 <Route path={"/*"} element={<Navigate to={"/"}/>}/>
             </Routes>

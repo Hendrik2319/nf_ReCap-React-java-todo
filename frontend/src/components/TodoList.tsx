@@ -1,9 +1,11 @@
 import {DEBUG, IdCallback, Todo, TodoStatus} from "../Types.tsx";
 import TodoCard from "./TodoCard.tsx";
+import {TodoDetailsOptions} from "./TodoDetails.tsx";
 
 type TodoListProps = {
     todoList: Todo[]
     showAddDialog: () => void
+    showDetailsDialog: (options: TodoDetailsOptions) => void
     deleteTodo: IdCallback
     advanceTodo: IdCallback
 }
@@ -21,6 +23,7 @@ export default function TodoList( props: TodoListProps ) {
                     hideStatus={true}
                     deleteTodo={withDelete ? props.deleteTodo : undefined}
                     advanceTodo={withAdvance ? props.advanceTodo : undefined}
+                    showDetailsDialog={props.showDetailsDialog}
                 />
             )
     }
