@@ -1,6 +1,5 @@
 import './App.css'
-import './FloatingDialogs.css'
-import React, {ReactNode, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {DEBUG, getNextStatus, Todo} from "./Types.tsx";
 import TodoList from "./components/TodoList.tsx";
 import {Navigate, Route, Routes} from "react-router-dom";
@@ -8,6 +7,7 @@ import {EditTodo} from "./components/EditTodo.tsx";
 import TodoDetails from "./components/TodoDetails.tsx";
 import {ApiService, createApiService} from "./services/ApiService.tsx";
 import {AddTodo} from "./components/AddTodo.tsx";
+import createDialog from "./FloatingDialogs.tsx";
 
 export default function App() {
     const [reloadState, setReloadState] = useState<boolean>(false)
@@ -46,36 +46,6 @@ export default function App() {
         apiService.update( advancedTodo )
     }
 
-    function createDialog( id:string, writeContent: ( closeDialog: ()=>void ) => ReactNode ) {
-
-        function showDialog( visible:boolean ) {
-            const dialog = document.querySelector('#'+id)
-            if (dialog) {
-                if (visible)
-                    dialog.classList.add('visible')
-                else
-                    dialog.classList.remove('visible')
-            }
-        }
-
-        function closeDialog() {
-            showDialog(false)
-        }
-
-        return {
-            showDialog : () => showDialog(true),
-            closeDialog,
-            writeHTML  : () => (
-                <div id={id} className="DialogBackground">
-                    <div className="Dialog">
-                        {writeContent(closeDialog)}
-                        {/*<AddTodo addTodo={addTodo} closeDialog={() => showDialog(false)}/>*/}
-                    </div>
-                </div>
-            )
-        }
-    }
-
     const addDialog = createDialog( 'dialog1',
         closeDialog => <AddTodo addTodo={addTodo} closeDialog={closeDialog}/>
     )
@@ -83,14 +53,6 @@ export default function App() {
     return (
         <>
             <h1>{"Todo"} List</h1>
-            {/*<button onClick={() => showDialog(true)}>Show Dialog</button>*/}
-{/*
-            <div id="dialog1" className="DialogBackground">
-                <div className="Dialog">
-                    <AddTodo addTodo={addTodo} closeDialog={() => showDialog(false)}/>
-                </div>
-            </div>
-*/}
             {addDialog.writeHTML()}
             <Routes>
                 <Route path="/"
