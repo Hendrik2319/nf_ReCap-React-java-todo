@@ -7,7 +7,7 @@ import {EditTodo} from "./components/EditTodo.tsx";
 import TodoDetails from "./components/TodoDetails.tsx";
 import {ApiService, createApiService} from "./services/ApiService.tsx";
 import {AddTodo} from "./components/AddTodo.tsx";
-import createDialog from "./FloatingDialogs.tsx";
+import {createDialog} from "./FloatingDialogs.tsx";
 
 export default function App() {
     const [reloadState, setReloadState] = useState<boolean>(false)
@@ -46,9 +46,12 @@ export default function App() {
         apiService.update( advancedTodo )
     }
 
-    const addDialog = createDialog( 'dialog1',
-        closeDialog => <AddTodo addTodo={addTodo} closeDialog={closeDialog}/>
-    )
+    const addDialog =
+        createDialog<undefined>(
+            'addDialog',
+            dialogControl =>
+                <AddTodo addTodo={addTodo} closeDialog={dialogControl.closeDialog}/>
+        )
 
     return (
         <>
