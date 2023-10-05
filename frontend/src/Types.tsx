@@ -8,5 +8,14 @@ export type Todo = {
 
 export type TodoStatus = "OPEN" | "IN_PROGRESS" | "DONE"
 
+// eslint-disable-next-line react-refresh/only-export-components
+export function getNextStatus( status:TodoStatus ): TodoStatus | undefined {
+    switch (status) {
+        case "OPEN"       : return "IN_PROGRESS"
+        case "IN_PROGRESS": return "DONE"
+        default: return undefined
+    }
+}
+
 export type TodoCallback = (entry: Todo) => void;
 export type IdCallback   = (id: string) => void;
