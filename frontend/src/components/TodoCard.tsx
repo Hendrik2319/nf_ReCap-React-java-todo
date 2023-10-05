@@ -9,6 +9,7 @@ type TodoCardProps = {
     showDetailsDialog?: (options: TodoDetailsOptions) => void
     hideEditBtn?: boolean
     hideStatus?: boolean
+    noBox?: boolean
 }
 
 export default function TodoCard( props: TodoCardProps ) {
@@ -30,7 +31,7 @@ export default function TodoCard( props: TodoCardProps ) {
     }
 
     return (
-        <div className="TodoCard">
+        <div className={"TodoCard"+(props.noBox ? "" : " Box")}>
             <div className="Id">id: {props.todo.id}</div>
             <div className="Description">{props.todo.description}</div>
             {!props.hideStatus        && <div className="Status">{props.todo.status}</div>}

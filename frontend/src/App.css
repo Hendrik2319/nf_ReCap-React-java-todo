@@ -31,7 +31,7 @@ body {
     */
 }
 
-.TodoCard, .EditTodoForm {
+.Box {
     border: 1px solid #eee;
     border-radius: 0.6em;
     padding: 0.6em;
@@ -45,13 +45,17 @@ body {
 }
 
 .TodoCard button {
-    border: 1px solid #aaa;
-    background-color: #f0f0f0;
+    border: 1px solid #79798b;
+    background-color: #dfe0e4;
     border-radius: 4px;
 }
+.TodoCard button:hover { background-color: #c9c9d0; }
+
 .TodoCard .Id { font-size: 0.6em; color: #777; }
 .TodoCard .Description { margin: 1em 0.5em; }
 .TodoCard .Status { color: blue; }
-.TodoCard .DeleteBtn { background-color: #ffcccc; }
-.TodoCard .AdvanceBtn { background-color: #ccccff; }
+.TodoCard .DeleteBtn       { background-color: #ffcccc; }
+.TodoCard .DeleteBtn:hover { background-color: #eebbbb; }
+.TodoCard .AdvanceBtn       { background-color: #ccccff; }
+.TodoCard .AdvanceBtn:hover { background-color: #bbbbee; }
 

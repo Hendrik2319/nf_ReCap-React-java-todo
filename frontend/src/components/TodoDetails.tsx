@@ -62,6 +62,6 @@ function TodoDetails( props: TodoDetailsOptions ) {
     return (
         !wasLoaded ? <>--- Loading ---<br/></> :
             !todo ? <>{"Todo"} with id "{props.id}" not found<br/></> :
-                <TodoCard todo={todo} hideEditBtn={true} />
+                <TodoCard todo={todo} hideEditBtn={true} noBox={true}/>
     )
 }

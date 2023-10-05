@@ -38,7 +38,7 @@ export function EditTodoForm( props:Props ) {
     }
 
     return (
-        <form className="EditTodoForm" onSubmit={saveChanges}>
+        <form className="EditTodoForm Box" onSubmit={saveChanges}>
             <label>id          : {selectedEntry.id         }</label>
             <label>description : <input  name="description" value={selectedEntry.description} onChange={onChangeFcnI}/></label>
             <label>status      : <select name="status"      value={selectedEntry.status     } onChange={onChangeFcnS}>
